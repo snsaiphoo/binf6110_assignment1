@@ -16,9 +16,10 @@ The proposed pipeline will be run on a DRAC cluster through a SLURM job. While t
 The raw reads are to be downloaded from NCBI SRA. The reads will be in SRA format, and converted to FASTQ format. This will be done through the SRA-toolkit to continue with quality checking. 
 
 ### Nanoplot for Quality Checking 
-Nanoplot v 1.42.0 will be used to evaluate the quality of the long-read raw data. The results will list out read length distributions, quality scores, etc.[9]. The results will be evaluated to determine if Porechop_ABI will be used to further clean the data. A further example of this methodology has been seen for a Nanopore Quality Check Pipeline [10]. 
-command format: NanoPlot -t 4 -o OUTDIR –fastq file 
-
+Nanoplot v 1.42.0 will be used to evaluate the quality of the long-read raw data. The results will list out read length distributions, quality scores, etc. [9]. The results will be evaluated to determine if Porechop_ABI will be used to further clean the data. A further example of this methodology has been seen for a Nanopore Quality Check Pipeline [10]. 
+```
+command: NanoPlot -t 4 -o OUTDIR –fastq file 
+```
 ### Running the Genome Assembly with Flye
 Flye v 2.9.6 will be used for this pipeline for reasons specified above. It has shown promising results in the literature, it is versatile and robust [6-8].  
 Command format: flye –nano-hq FILE –genome-size 5m –asm-coverage 160 –t 16 
