@@ -18,12 +18,12 @@ The raw reads are to be downloaded from NCBI SRA. The reads will be in SRA forma
 ### Nanoplot for Quality Checking 
 Nanoplot v 1.42.0 will be used to evaluate the quality of the long-read raw data. The results will list out read length distributions, quality scores, etc. [9]. The results will be evaluated to determine if Porechop_ABI will be used to further clean the data. A further example of this methodology has been seen for a Nanopore Quality Check Pipeline [10]. 
 ```
-NanoPlot -t 4 -o OUTDIR –fastq file 
+NanoPlot -t 4 -o OUTDIR --fastq file 
 ```
 ### Running the Genome Assembly with Flye
 Flye v 2.9.6 will be used for this pipeline for reasons specified above. It has shown promising results in the literature, and it is versatile and robust [6-8].  
 ```
-flye –nano-hq FILE –genome-size 5m –asm-coverage 160 –t 16
+flye --nano-hq FILE --genome-size 5m --asm-coverage 160 –t 16
 ```
 The --nano-hq option will be selected to account for higher-quality ONT R10 reads, and --asm-coverage 160 will be used to limit excessive coverage.
 The assembly will be run using 16 CPU cores with 64 GB of memory, and an estimated runtime of two hours, as listed in the ONT documentation [11,12].
@@ -42,10 +42,10 @@ Assembly analysis will be performed using QUAST v 5.20. This analysis will provi
 ### Alignment to Reference
 The polished assembly from the previous step will be aligned to the reference genome taken from NCBI. The software minimap2 v 2.28 will be used as it is used for long-read alignment [14]. These results will produce a SAM file that will be converted into a BAM file using samtools 1.22.1, this is the input for the visualizations [16].
 ```
-./minimap2 -ax lr:hq referencef.fa assembly.fa > aln.sam [17]
+./minimap2 -ax lr:hq reference.fa assembly.fa > aln.sam [17]
 ```
 ```
-samtools 1.22.1 samtools view -bS aln.sam
+samtools view -bS aln.sam
 samtools sort -o aln.sorted.bam
 samtools index aln.sorted.bam [16]
 ```
