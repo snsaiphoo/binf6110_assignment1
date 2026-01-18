@@ -50,7 +50,7 @@ samtools sort -o aln.sorted.bam
 samtools index aln.sorted.bam [16]
 ```
 ### Variant Calling 
-
+The variant calling step will be performed using Clair3, which is run within an Apptainer container on the DRAC cluster. Clair3 is a long-read-based variant caller used to identify SNPs and small deletions or insertions between the assembly and reference [19]. 
 
 ### Alignment Visualizations with IGV
 The alignment results will be visualized with IGV version 2.19.7 [18]. Import BAM file and Assembly information and visualize the coverage patterns and structural differences. 
@@ -74,7 +74,7 @@ The alignment results will be visualized with IGV version 2.19.7 [18]. Import BA
 [16] “samtools(1) manual page,” www.htslib.org. [Online]. Available: https://www.htslib.org/doc/samtools.html<br/>
 [17] H. Li, “lh3/minimap2,” GitHub, Feb. 20, 2022. [Online]. Available: https://github.com/lh3/minimap2 <br/>
 [18] “Integrated Genomics Viewer - SciLifeLab Courses,” Github.io, 2026. [Online]. Available: https://scilifelab.github.io/courses/rnaseq/labs/IGV (accessed Jan. 17, 2026). <br/>
-
+[19] R. R. Wick, L. M. Judd, T. P. Stinear, and I. R. Monk, “Are reads required? High-precision variant calling from bacterial genome assemblies,” Access Microbiology, vol. 7, no. 5, May 2025, doi: https://doi.org/10.1099/acmi.0.001025.v3. <br/>
 
 
 
