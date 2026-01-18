@@ -18,29 +18,37 @@ The raw reads are to be downloaded from NCBI SRA. The reads will be in SRA forma
 ### Nanoplot for Quality Checking 
 Nanoplot v 1.42.0 will be used to evaluate the quality of the long-read raw data. The results will list out read length distributions, quality scores, etc. [9]. The results will be evaluated to determine if Porechop_ABI will be used to further clean the data. A further example of this methodology has been seen for a Nanopore Quality Check Pipeline [10]. 
 ```
-command: NanoPlot -t 4 -o OUTDIR –fastq file 
+NanoPlot -t 4 -o OUTDIR –fastq file 
 ```
 ### Running the Genome Assembly with Flye
-Flye v 2.9.6 will be used for this pipeline for reasons specified above. It has shown promising results in the literature, it is versatile and robust [6-8].  
-Command format: flye –nano-hq FILE –genome-size 5m –asm-coverage 160 –t 16 
-The --nano-hq option will be selected to account for higher-quality ONT R10 reads, and --asm-coverage 160 will be used to limit excessive coverage
+Flye v 2.9.6 will be used for this pipeline for reasons specified above. It has shown promising results in the literature, and it is versatile and robust [6-8].  
+```
+flye –nano-hq FILE –genome-size 5m –asm-coverage 160 –t 16
+```
+The --nano-hq option will be selected to account for higher-quality ONT R10 reads, and --asm-coverage 160 will be used to limit excessive coverage.
 The assembly will be run using 16 CPU cores with 64 GB of memory, and an estimated runtime of two hours, as listed in the ONT documentation [11,12].
 
 ### Polishing Assembly Results with Medaka
 The consensus assembly will be further polished using Medaka v 1.2.0. This is commonly used for ONT assemblies from Flye [13, 14, 11].   
+```
 medaka_consensus -i ${BASECALLS} -d ${DRAFT} -o ${OUTDIR} -t ${NPROC} --bacteria
+```
 
 ### Assembly Analysis with QUAST
 Assembly analysis will be performed using QUAST v 5.20. This analysis will provide standard assembly metrics such as total length, N50, and misassembly detection [5].
+```
 ./quast.py assembly.fasta -R reference.fasta -o OUTDIR [15]
-
+```
 ### Alignment to Reference
 The polished assembly from the previous step will be aligned to the reference genome taken from NCBI. The software minimap2 v 2.28 will be used as it is used for long-read alignment [14]. These results will produce a SAM file that will be converted into a BAM file using samtools 1.22.1, this is the input for the visualizations [16].
-→ minimap2 2.28 [17] 
-./minimap2 -ax lr:hq referencef.fa assembly.fa > aln.sam       [17]
-+ samtools 1.22.1 samtools view -bS aln.sam | samtools sort -o aln.sorted.bam
+```
+./minimap2 -ax lr:hq referencef.fa assembly.fa > aln.sam [17]
+```
+```
+samtools 1.22.1 samtools view -bS aln.sam
+samtools sort -o aln.sorted.bam
 samtools index aln.sorted.bam [16]
-
+```
 ### Alignment Visualizations with IGV
 The alignment results will be visualized with IGV version 2.19.7 [18]. Import BAM file and Assembly information and visualize the coverage patterns and structural differences. 
 
