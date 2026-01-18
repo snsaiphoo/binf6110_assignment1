@@ -49,6 +49,9 @@ samtools view -bS aln.sam
 samtools sort -o aln.sorted.bam
 samtools index aln.sorted.bam [16]
 ```
+### Variant Calling 
+
+
 ### Alignment Visualizations with IGV
 The alignment results will be visualized with IGV version 2.19.7 [18]. Import BAM file and Assembly information and visualize the coverage patterns and structural differences. 
 
