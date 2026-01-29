@@ -8,12 +8,6 @@ scratch/
 *.fastq
 *.fastq.gz
 
-# Analysis Steps
-nanoplot/
-assembly/
-quast/
-variants/
-
 # Conda
 .env/
 venv/
