@@ -3,16 +3,12 @@ scratch/
 *.out
 *.err
 *.log
+*.sif
 
 # Sequencing data
 *.fastq
 *.fastq.gz
-
-# Analysis Steps
-nanoplot/
-assembly/
-quast/
-variants/
+*.sra
 
 # Conda
 .env/
