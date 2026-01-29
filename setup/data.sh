@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This code is meant to be ran in your home directory to execute specific jobs in your $SCRATCH environment
+# This code is meant to be run in your raw directory of your $SCRATCH environment
 # This is with the assumption you are using a DRAC cluster
 
 module load sra-toolkit
@@ -9,4 +9,4 @@ cd SRR32410565
 fasterq-dump SRR32410565.sra
 gzip SRR32410565.fastq
 
-# You can use zcat to further view the file to validate the data is correct
+# You can use zcat to further view the file to validate that the data is correct
