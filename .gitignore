@@ -1,0 +1,19 @@
+# Cluster outputs
+scratch/
+*.out
+*.err
+*.log
+
+# Sequencing data
+*.fastq
+*.fastq.gz
+
+# Analysis Steps
+nanoplot/
+assembly/
+quast/
+variants/
+
+# Conda
+.env/
+venv/
