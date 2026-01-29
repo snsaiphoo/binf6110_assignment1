@@ -3,6 +3,7 @@ scratch/
 *.out
 *.err
 *.log
+*.sif
 
 # Sequencing data
 *.fastq
