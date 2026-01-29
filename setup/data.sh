@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This code is meant to be run in your raw directory of your $SCRATCH environment
+# This code is meant to be ran in the raw directory of your $SCRATCH environment
 # This is with the assumption you are using a DRAC cluster
 
 module load sra-toolkit
