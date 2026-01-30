@@ -7,5 +7,9 @@
 # NanoPlot version 1.46.2
 # scratch/$USER/salmonella/containers
 
-module load apptainer
 singularity pull docker://quay.io/biocontainers/nanoplot:1.46.2--pyhdfd78af_0
+
+# Flye version 2.9.6 
+# scratch/$USER/salmonella/containers
+
+singularity pull docker://quay.io/biocontainers/flye:2.9.6--py311h2de2dd3_0
