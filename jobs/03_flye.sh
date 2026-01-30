@@ -1,7 +1,7 @@
 #!/bin/bash 
 #SBATCH --job-name=flye
 #SBATCH --time=04:00:00
-#SBATCH --mem=32GB
+#SBATCH --mem=16GB
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/scratch/%u/salmonella/logs/03_%j.out
 #SBATCH --error=/scratch/%u/salmonella/logs/03_%j.err
