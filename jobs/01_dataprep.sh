@@ -11,7 +11,7 @@ module load apptainer
 
 apptainer exec containers/nanoplot_1.46.2--pyhdfd78af_0.sif NanoPlot \
 --fastq raw/SRR32410565/SRR32410565.fastq.gz \
--o nanoplot 
+-o nanoplot/01_nanoplot 
 
 
 
