@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This was ran in the /scratch/$USER/salmonella/containers
+
+apptainer exec clair3.sif run_clair3.sh \
+  --bam_fn=../minimap/reads.sorted.bam \
+  --ref_fn=../raw/GCF_000006945.2_ASM694v2_genomic.fna \
+  --threads=32 \
+  --platform=ont \
+  --model_path=/opt/models/r1041_e82_400bps_sup_v500 \
+  --include_all_ctgs \
+  --output=../clair3_out
+

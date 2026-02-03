@@ -15,3 +15,12 @@ samtools sort aln.bam -o aln.sorted.bam
 samtools index aln.sorted.bam
 
 # These files will be used in IGV for visualizations
+
+# This is necessary to run Clair3
+
+samtools faidx ../raw/GCF_000006945.2_ASM694v2_genomic.fna
+
+# Creating a .paf file to create a Circos plot
+
+minimap2 -x asm5 ../raw/GCF_000006945.2_ASM694v2_genomic.fna \
+../polishing/consensus.fasta > aln.paf
