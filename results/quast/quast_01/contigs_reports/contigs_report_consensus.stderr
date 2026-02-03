@@ -1,0 +1,10 @@
+[M::mm_idx_gen::0.104*0.97] collected minimizers
+[M::mm_idx_gen::0.121*1.61] sorted minimizers
+[M::main::0.121*1.61] loaded/built the index for 3 target sequence(s)
+[M::mm_mapopt_update::0.137*1.47] mid_occ = 200
+[M::mm_idx_stat] kmer size: 19; skip: 19; is_hpc: 0; #seq: 3
+[M::mm_idx_stat::0.146*1.43] distinct minimizers: 501626 (99.01% are singletons); average occurrences: 1.019; average spacing: 9.988; total length: 5104813
+[M::worker_pipeline::0.733*1.50] mapped 3 sequences
+[M::main] Version: 2.28-r1209
+[M::main] CMD: /usr/local/bin/minimap2 -c -x asm10 -B5 -O4,16 --no-long-join -r 200 -N 50 -s 65 -z 200 --mask-level 0.9 --min-occ 200 -g 2500 --score-N 2 --cs -t 8 /scratch/ssaiphoo/salmonella/quast/quast_corrected_input/assembly.fasta /scratch/ssaiphoo/salmonella/quast/quast_corrected_input/consensus.fasta
+[M::main] Real time: 0.741 sec; CPU: 1.108 sec; Peak RSS: 0.113 GB

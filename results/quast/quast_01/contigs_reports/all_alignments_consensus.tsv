@@ -1,0 +1,7 @@
+S1	E1	S2	E2	Reference	Contig	IDY	Ambiguous	Best_group
+1	109059	1	109059	contig_3	contig_3	100.0		True
+CONTIG	contig_3	109059	correct
+1	3318776	1	3318770	contig_1	contig_1	100.0		True
+CONTIG	contig_1	3318770	correct
+1	1676978	1	1676979	contig_2	contig_2	100.0		True
+CONTIG	contig_2	1676979	correct

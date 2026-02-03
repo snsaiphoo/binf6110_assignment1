@@ -1,0 +1,8 @@
+#!/bin/bash
+
+module load StdEnv/2023
+module load minimap2/2.28
+
+# Docker image can be found in the buildcontainers.sh
+
+

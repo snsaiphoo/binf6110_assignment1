@@ -1,0 +1,16 @@
+reference chromosomes:
+	contig_1 (total length: 3318776 bp, total length without N's: 3318776 bp, maximal covered length: 3318776 bp)
+	contig_2 (total length: 1676978 bp, total length without N's: 1676978 bp, maximal covered length: 1676978 bp)
+	contig_3 (total length: 109059 bp, total length without N's: 109059 bp, maximal covered length: 109059 bp)
+
+total genome size: 5104813
+
+gap min size: 50
+partial gene/operon min size: 100
+
+
+
+assembly                 | genome    | duplication | gaps      | genes     | partial   | operons   | partial   |
+                         | fraction  | ratio       | number    |           | genes     |           | operons   |
+========================================================================================================================
+consensus                | 100.000   | 1.000       | 0         | -         | -         | -         | -         |
