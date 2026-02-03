@@ -22,3 +22,13 @@ singularity pull docker://quay.io/biocontainers/medaka:2.1.1--py311h1d3aea1_0
 
 # QUAST version 5.3.0
 singularity pull docker://quay.io/biocontainers/quast:5.3.0--py313pl5321h5ca1c30_2
+
+# minimap2 version 2.28
+singularity pull docker://quay.io/biocontainers/minimap2:2.28--h577a1d6_4
+
+# samtools version 1.22.1
+singularity pull docker://quay.io/biocontainers/samtools:1.22.1--h96c455f_0
+
+# Clair3 version 1.2.0
+singularity pull docker://hkubal/clair3
+
