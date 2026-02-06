@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# This script compares the polished assembly to the reference
 cd /scratch/$USER/salmonella
 
 module load apptainer
