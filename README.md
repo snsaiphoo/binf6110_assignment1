@@ -34,7 +34,7 @@ The consensus assembly will be further polished using Medaka v2.1.1. This is com
 Assembly analysis will be performed using QUAST v5.3.0. This analysis will provide standard assembly metrics such as total length, N50, and misassembly detection [5]. QUAST was run twice to assess the polishing quality against the reference genome from NCBI. The commented commands for both runs can be found in the [`06_quast1.sh`](./pipeline/scripts/06_quast1.sh) and [`07_quast2.sh`](./pipeline/scripts/07_quast2.sh) files.
 
 ### 6.1 - Alignment to Reference
-The polished assembly from 4.1 was aligned to the reference. The software minimap2 v2.28 will be used, as it is used for long-read alignment [15]. These results produced a SAM file, which was converted to a BAM file using samtools; this served as the input for the visualizations [17]. The specific commands are in the script file [`08_align.sh1](./pipeline/scripts/08_align.sh). The parameters chosen were to output the results in SAM format (- a) and to use preset high-quality long reads (-x lr:hq).
+The polished assembly from 4.1 was aligned to the reference. The software minimap2 v2.28 will be used, as it is used for long-read alignment [15]. These results produced a SAM file, which was converted to a BAM file using samtools; this served as the input for the visualizations [17]. The specific commands are in the script file [`08_align.sh1`](./pipeline/scripts/08_align.sh). The parameters chosen were to output the results in SAM format (- a) and to use preset high-quality long reads (-x lr:hq).
 
 ### 7.1 - Clair3 for Variant Calling 
 Clair3 v1.2.0 was used for variant calling; it is a long-read-based variant caller that identifies SNPs and small insertions or deletions relative to the reference genome [10]. samtools v1.22.1 was used to index the reference genome and to convert the raw reads into a sorted BAM file. Genome annotation was performed using Prokka v1.15.6 to generate gene models from the reference assembly. These annotations were then used with bcftools v1.5 to perform functional consequence prediction with bcftools csq, enabling classification of variants as synonymous, missense, in-frame indels, or frameshift mutations and allowing inference of predicted amino acid changes. The annotated variant calls were written to the file annotated.vcf and were used for downstream visualization. The commented commands can be found in the following files [`09_variants.sh`](./pipeline/scripts/09_variants.sh) and [`10_varannot.sh`](./pipeline/scripts/10_varannot.sh).
@@ -44,6 +44,42 @@ The alignment results were visualized with IGV version 2.19.7 [19]. The BAM file
 
 ### 9.1 - Assembly Visualizations - Circos Plot
 A dedicated Conda environment was created to install and manage the dependencies required for genome comparison and visualization. Prokka was run on both the reference and assembled genomes to generate standardized gene annotations in GFF format. These annotations were used as input for SYNY to identify syntenic regions between the genomes [22]. The resulting alignment and feature files were formatted for Circos, which was used to generate a circular visualization of the genome structure. The installation instructions and script to generate the plot can be found in [`11_circos.sh`](./pipeline/scripts/11_circos.sh).
+
+## Results 
+
+### NanoPlot
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7488d953-bfb8-4eb4-851a-fe370be5d244" width="80%">
+  <br>
+  <strong>Figure 1: </strong><em> NanoPlot read length vs quality distribution before filtering.</em>
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/efc672f3-924a-4e6d-840a-d72668987773" width="80%" />
+  <br>
+  <strong>Figure 2: </strong><em> NanoPlot read length vs quality distribution after filtering.</em>
+</p>
+
+<p align="center"><strong>Table 1.</strong> Summary statistics of raw and filtered sequencing reads.</p>
+
+<table align="center">
+<tr><th>Metric</th><th>Raw Data</th><th>Filtered Data</th></tr>
+<tr><td>Number of reads</td><td>196,031</td><td>157,479</td></tr>
+<tr><td>Mean read length (bp)</td><td>4,128.4</td><td>4,625.2</td></tr>
+<tr><td>N50 (bp)</td><td>4,683</td><td>4,903</td></tr>
+<tr><td>Median read quality</td><td>23.7</td><td>23.9</td></tr>
+<tr><td>Mean quality</td><td>18.9</td><td>20.0</td></tr>
+<tr><td>Reads > Q20</td><td>150,827 (76.9%) — 625.5 Mb</td><td>126,072 (80.1%) — 577.9 Mb</td></tr>
+</table>
+
+The raw reads had an N50 of about 4,700 bp (Table 1), which is consistent with expectations for R10 chemistry. The median read quality was 23.7, and roughly 77% of reads were above Q20, showing that the dataset was already fairly accurate. However, the quality distribution had a small low-quality tail (Figure 1), with the median higher than the mean, suggesting that a portion of reads were pulling the average down. Because of this, light filtering was applied using Filtlong with a minimum read length of 1,000 bp and a minimum accuracy of 90%.
+
+After filtering, 157,479 reads totaling 728 Mb were retained. The mean read length (4,625 bp) and N50 (4,903 bp) show that read length was mostly preserved while quality improved. The median read quality increased slightly to 23.9, and 80.1% of reads exceeded Q20, indicating enrichment for higher-accuracy reads. While a few long reads still showed lower quality, the overall distribution shifted toward more reliable base calls. This balance between keeping long reads and improving accuracy made the filtered dataset more suitable for downstream Flye assembly, where higher read confidence supports better graph construction and consensus.
+
+The filtered dataset retained 728 Mb of sequence. With an assembled genome size of approximately 5.1 Mb, this corresponds to an average sequencing depth of ~145× coverage.
+
+## Flye Assembly
 
 
 
@@ -67,6 +103,10 @@ A dedicated Conda environment was created to install and manage the dependencies
 [17] “samtools(1) manual page,” www.htslib.org. [Online]. Available: https://www.htslib.org/doc/samtools.html <br/> 
 [18] H. Li, “lh3/minimap2,” GitHub, Feb. 20, 2022. [Online]. Available: https://github.com/lh3/minimap2 <br/> 
 [19] “Integrated Genomics Viewer - SciLifeLab Courses,” Github.io, 2026. [Online]. Available: https://scilifelab.github.io/courses/rnaseq/labs/IGV (accessed Jan. 17, 2026). <br/> 
+[20] A. Klymenko , “08. prefetch and fasterq dump,” GitHub, Sep. 12, 2023. https://github.com/ncbi/sra-tools/wiki/08.-prefetch-and-fasterq-dump <br/> 
+[21] R. Wick, “rrwick/Filtlong,” GitHub, Nov. 12, 2022. https://github.com/rrwick/Filtlong <br/> 
+[22] PombertLab, “GitHub - PombertLab/SYNY: The SYNY pipeline investigates synteny between species by reconstructing protein clusters from gene pairs.,” GitHub, 2025. https://github.com/PombertLab/SYNY?tab=readme-ov-file#Circos-plots (accessed Feb. 05, 2026). <br/> 
+
 
 
 
