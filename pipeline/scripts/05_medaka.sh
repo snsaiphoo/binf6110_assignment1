@@ -12,7 +12,7 @@ module load apptainer
 # Using 8 threads
 
 apptainer exec ../containers/medaka.sif medaka_consensus \
--i ../data/filteredSRR32410565.fastq \
+-i ../data/filteredSRR32410565.fastq.gz \
 -d ../assembly/assembly.fasta \
 -o . \
 -t 8

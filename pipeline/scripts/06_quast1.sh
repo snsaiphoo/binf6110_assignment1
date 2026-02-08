@@ -7,5 +7,7 @@ cd quast
 
 module load apptainer
 
-apptainer exec ../containers/quast.sif quast.py ../assembly/assembly.fasta -R
-../data/GCF_000006945.2_ASM694v2_genomic.fna -o quast_01
+apptainer exec ../containers/quast.sif quast.py \
+../assembly/assembly.fasta \
+-R ../data/GCF_000006945.2_ASM694v2_genomic.fna \
+-o quast_01
