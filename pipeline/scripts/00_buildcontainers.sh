@@ -6,7 +6,7 @@
 # Apptainer is required, the DRAC cluster module was used
 
 cd ..
-mkdir containers
+mkdir -p containers
 cd containers
 
 module load apptainer

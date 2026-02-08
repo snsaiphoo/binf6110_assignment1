@@ -15,7 +15,9 @@ cd SRR32410565
 # Converting the SRA data from prefetch into a FASTQ file
 singularity exec ../../containers/sra-toolkit.sif fasterq-dump SRR32410565.sra
 
-# Zipping the FASTQ file 
+# Zipping the FASTQ file
 gzip SRR32410565.fastq
 
 # You can use zcat to further view the file to validate that the data is correct
+
+mv SRR32410565.fastq.gz ..
