@@ -37,7 +37,7 @@ Assembly analysis will be performed using QUAST v5.3.0. This analysis will provi
 The polished assembly from 4.1 was aligned to the reference. The software minimap2 v2.28 will be used, as it is used for long-read alignment [15]. These results produced a SAM file, which was converted to a BAM file using samtools; this served as the input for the visualizations [17]. The specific commands are in the script file [`08_align.sh1`](./pipeline/scripts/08_align.sh). The parameters chosen were to output the results in SAM format (- a) and to use preset high-quality long reads (-x lr:hq).
 
 ### 7.1 - Clair3 for Variant Calling 
-Clair3 v1.2.0 was used for variant calling; it is a long-read-based variant caller that identifies SNPs and small insertions or deletions relative to the reference genome [10]. samtools v1.22.1 was used to index the reference genome and to convert the raw reads into a sorted BAM file. Genome annotation was performed using Prokka v1.15.6 to generate gene models from the reference assembly. These annotations were then used with bcftools v1.5 to perform functional consequence prediction with bcftools csq, enabling classification of variants as synonymous, missense, in-frame indels, or frameshift mutations and allowing inference of predicted amino acid changes. The annotated variant calls were written to the file annotated.vcf and were used for downstream visualization. The commented commands can be found in the following files [`09_variants.sh`](./pipeline/scripts/09_variants.sh) and [`10_varannot.sh`](./pipeline/scripts/10_varannot.sh).
+Clair3 v1.2.0 was used for variant calling; it is a long-read-based variant caller that identifies SNPs and small insertions or deletions relative to the reference genome [10]. samtools v1.22.1 was used to index the reference genome and to convert the raw reads into a sorted BAM file. Genome annotation was performed using Prokka v1.15.6 [26] to generate gene models from the reference assembly. These annotations were then used with bcftools v1.5 to perform functional consequence prediction with bcftools csq [25], enabling classification of variants as synonymous, missense, in-frame indels, or frameshift mutations and allowing inference of predicted amino acid changes. The annotated variant calls were written to the file annotated.vcf and were used for downstream visualization. The commented commands can be found in the following files [`09_variants.sh`](./pipeline/scripts/09_variants.sh) and [`10_varannot.sh`](./pipeline/scripts/10_varannot.sh).
 
 ### 8.1 -Alignment Visualizations with IGV
 The alignment results were visualized with IGV version 2.19.7 [19]. The BAM file was imported to visualize coverage patterns. Variant calls generated in 7.1 were loaded alongside the alignment to identify sequence differences between the assembly and the reference genome. The functionally annotated reference genome was also imported, allowing variants to be interpreted in their gene context and enabling direct visualization of predicted coding consequences.
@@ -48,8 +48,6 @@ A dedicated Conda environment was created to install and manage the dependencies
 ## Results 
 
 ### NanoPlot
-
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/7488d953-bfb8-4eb4-851a-fe370be5d244" width="80%">
   <br>
@@ -60,7 +58,8 @@ A dedicated Conda environment was created to install and manage the dependencies
   <br>
   <strong>Figure 2: </strong><em> NanoPlot read length vs quality distribution after filtering.</em>
 </p>
-
+ <br></br>
+ 
 <p align="center"><strong>Table 1.</strong> Summary statistics of raw and filtered sequencing reads.</p>
 
 <table align="center">
@@ -73,15 +72,71 @@ A dedicated Conda environment was created to install and manage the dependencies
 <tr><td>Reads > Q20</td><td>150,827 (76.9%) — 625.5 Mb</td><td>126,072 (80.1%) — 577.9 Mb</td></tr>
 </table>
 
-The raw reads had an N50 of about 4,700 bp (Table 1), which is consistent with expectations for R10 chemistry. The median read quality was 23.7, and roughly 77% of reads were above Q20, showing that the dataset was already fairly accurate. However, the quality distribution had a small low-quality tail (Figure 1), with the median higher than the mean, suggesting that a portion of reads were pulling the average down. Because of this, light filtering was applied using Filtlong with a minimum read length of 1,000 bp and a minimum accuracy of 90%.
+The raw reads had an N50 of about 4,700 bp (Table 1), which is consistent with expectations for R10 chemistry. The median read quality was 23.7, and roughly 77% of reads were above Q20, showing that the dataset was already fairly accurate. However, the quality distribution had a small low-quality tail (Figure 1), with the median higher than the mean, suggesting that a portion of reads was pulling the average down. Because of this, minor filtering was applied using Filtlong with a minimum read length of 1,000 bp and a minimum accuracy of 90%.
 
-After filtering, 157,479 reads totaling 728 Mb were retained. The mean read length (4,625 bp) and N50 (4,903 bp) show that read length was mostly preserved while quality improved. The median read quality increased slightly to 23.9, and 80.1% of reads exceeded Q20, indicating enrichment for higher-accuracy reads. While a few long reads still showed lower quality, the overall distribution shifted toward more reliable base calls. This balance between keeping long reads and improving accuracy made the filtered dataset more suitable for downstream Flye assembly, where higher read confidence supports better graph construction and consensus.
+After filtering, 157,479 reads totaling 728 Mb were retained. Looking at the results in Table 1, the mean read length (4,625 bp) and N50 (4,903 bp) indicate that read length was mostly preserved while quality improved. The median read quality increased slightly to 23.9, and 80.1% of reads exceeded Q20, indicating enrichment for higher-accuracy reads. The median and mean also became closer together, minimizing the effects of the tail. While a few long reads still showed lower-quality base calls, the overall distribution shifted toward higher-quality base calls. Many long reads were retained, and improvements in accuracy made the filtered dataset more suitable for downstream Flye assembly, where higher read confidence supports better graph construction and consensus.
 
-The filtered dataset retained 728 Mb of sequence. With an assembled genome size of approximately 5.1 Mb, this corresponds to an average sequencing depth of ~145× coverage.
+The filtered dataset retained 728 Mb of sequence. With an assembled genome size of approximately 5.1 Mb, this corresponds to an average sequencing depth of approximately 145×. The output files from both NanoPlot runs are in the [`results/nanoplot`](./results/nanoplot) directory. 
 
-## Flye Assembly
+### Flye Assembly
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1a58bf15-f3d5-4bcc-b8b3-639c7f7852c9" width="80%" />
+  <br></br>
+  <strong>Figure 3: </strong><em> Flye assembly results using the filtered data.</em>
+</p>
 
 
+The Flye assembly produced three contigs totaling approximately 5.1 Mb. There were two large contigs, with a size of approximately 3.32 Mb and 1.68 Mb, respectively. They each showed similar sequencing coverage (142× and 153×, respectively), suggesting they both come from the same genome. Both contigs were classified as having no repeats, which indicates a stable assembly. A third, smaller contig of 109 kb showed higher coverage (218×) and was predicted to be circular, indicating a plasmid [23]. The absence of repeat flags and alternative graph paths suggests that the assembly is structurally clean and well-supported by reads. Together, these results display a high-confidence bacterial assembly with one possible plasmid and a chromosome represented by two large contigs [23]. The output files from the assembly are in the [`results/assembly`](./results/assembly) directory. 
+
+### Polishing Assembly
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/32871ef7-25cb-481c-b249-7c08ccab3cca"80%" />
+  <br>
+  <strong>Figure 4: </strong><em> QUAST consensus (polished) results against reference.</em>
+</p>
+
+</br>
+<p align="center"><strong>Table 2.</strong> QUAST comparison of assembly and polished consensus vs reference genome.</p>
+
+<table align="center">
+<tr><th>Metric</th><th>Assembly</th><th>Consensus (Polished)</th></tr>
+<tr><td>Genome fraction (%)</td><td>95.669</td><td>95.669</td></tr>
+<tr><td>Duplication ratio</td><td>1.002</td><td>1.002</td></tr>
+<tr><td>N50</td><td>3,318,776</td><td>3,318,770</td></tr>
+<tr><td>Misassemblies</td><td>25</td><td>25</td></tr>
+<tr><td>Type</td><td>All relocations</td><td>All relocations</td></tr>
+</table>
+
+QUAST analysis comparing the assembly to the Salmonella enterica serovar Typhimurium LT2 reference genome (GCF_000006945.2) [24]  showed strong overall agreement [5]. Both the assembly and consensus sequences achieved a genome fraction of approximately 95.7% and a duplication ratio of 1.002, indicating close to complete coverage and low redundancy. The N50 value of 3.3 Mb reflects high contiguity when compared to the 5 Mb reference genome. A total of 25 misassemblies were detected, all classified as relocations. Because the isolate is not identical to the LT2 strain, these events likely represent biological strain variation rather than major assembly errors. The near-identical QUAST metrics between the assembly and polished consensus indicate that polishing preserved global genome structure while maintaining assembly quality. In both cases, there are negligible differences, but the polished consensus was used moving forward. The output files from both QUAST runs are in the [`results/quast`](./results/quast) directory. 
+
+### Variant Calling
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/02532cfb-e416-418c-b137-8c94dfe38955"80%" />
+  <br>
+  <strong>Figure 5: </strong><em> Clair3 variant calls initial output file.</em>
+</p>
+
+Clair3 was used for variant calling, identifying high-confidence SNPs and small indels relative to the Salmonella enterica LT2 reference genome [10]. Most variants passed filtering with high read depth and genotype quality, and allele frequencies were close to 1, 0.9–1.0. Both substitutions and indels were observed, reflecting normal strain-level differences from the laboratory reference.
+
+Variant summary statistics generated with `bcftools stats` [25] reported 10,502 total variants, mostly SNPs (9,353) and fewer indels (1,166). The transition/transversion ratio was 1.08. Quality score distributions showed many high-confidence calls, including a large number of variants with QUAL ≥30, indicating strong support from the sequencing reads. Indels and substitutions are expected in long-read sequencing because these technologies have known error patterns, especially in low-complexity or homopolymer regions [29]. Overall, the variant patterns are consistent with expected long-read behavior and support the reliability of the Clair3 call set.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/30499c71-015c-4eb7-bc24-7b143e410192"80%" />
+  <br>
+  <strong>Figure 5: </strong><em> Summary of annotated variant calls through bcftools.</em>
+</p>
+
+Functional annotation using `bcftools csq` with Prokka gene models  [27, 28] showed that most variants were synonymous (n = 2139), followed by missense mutations (n = 865). A smaller number of high-impact variants were present, including frameshifts and stop-gained mutations. Nearly all variants were homozygous; the single heterozygous flag is likely due to noise rather than true biological variation, since bacterial genomes are haploid [30].
+
+The annotated VCF was filtered with bcftools [25] to select representative variants for visualization. Selected variants all had maximum QUAL scores (110). Visualizations with IGV can be seen below. 
+
+### Variant Visualizations
+<img width="830" height="287" alt="Screenshot 2026-02-08 001428" src="https://github.com/user-attachments/assets/2c5498f7-10bf-4473-af9c-2b487b4e8757" />
+<img width="828" height="314" alt="Screenshot 2026-02-08 001453" src="https://github.com/user-attachments/assets/c52872df-3fc0-48c2-8f4e-f20c383cbc99" />
+<img width="959" height="345" alt="Screenshot 2026-02-08 002312" src="https://github.com/user-attachments/assets/42c46a0c-a1fb-419d-87d1-610cd011bfa5" />
+
+## Assembly Visualizations
+<img width="3000" height="3000" alt="asm_vs_ref mmap normal" src="https://github.com/user-attachments/assets/047d140b-84f2-4a2e-95d8-e0fcfec9f6a2" />
 
 ## References
 [1] NCBI Sequence Read Archive. “SRA Archive: NCBI,” Nih.gov, 2026. [Online]. Available: https://trace.ncbi.nlm.nih.gov/Traces/?run=SRR32410565 (accessed Jan. 17, 2026).  <br/> 
@@ -106,7 +161,12 @@ The filtered dataset retained 728 Mb of sequence. With an assembled genome size 
 [20] A. Klymenko , “08. prefetch and fasterq dump,” GitHub, Sep. 12, 2023. https://github.com/ncbi/sra-tools/wiki/08.-prefetch-and-fasterq-dump <br/> 
 [21] R. Wick, “rrwick/Filtlong,” GitHub, Nov. 12, 2022. https://github.com/rrwick/Filtlong <br/> 
 [22] PombertLab, “GitHub - PombertLab/SYNY: The SYNY pipeline investigates synteny between species by reconstructing protein clusters from gene pairs.,” GitHub, 2025. https://github.com/PombertLab/SYNY?tab=readme-ov-file#Circos-plots (accessed Feb. 05, 2026). <br/> 
-
-
-
+[23] J. Johnson, M. Soehnlen, and H. M. Blankenship, “Long read genome assemblers struggle with small plasmids,” Microbial genomics, vol. 9, no. 5, May 2023, doi: https://doi.org/10.1099/mgen.0.001024. <br/>
+[24] “Index of /genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2,” Nih.gov, 2025. https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/ (accessed Feb. 08, 2026).
+[25]“bcftools(1),” Github.io, 2025. https://samtools.github.io/bcftools/bcftools-man.html#csq (accessed Feb. 08, 2026).
+[26]tseemann, “tseemann/prokka,” GitHub, Nov. 11, 2019. https://github.com/tseemann/prokka
+[27]T. Seemann, “Prokka: rapid prokaryotic genome annotation,” Bioinformatics, vol. 30, no. 14, pp. 2068–2069, Mar. 2014, doi: https://doi.org/10.1093/bioinformatics/btu153.
+[28]I. Bassano et al., “Evaluation of variant calling algorithms for wastewater-based epidemiology using mixed populations of SARS-CoV-2 variants in synthetic and wastewater samples,” Microbial Genomics, vol. 9, no. 4, Apr. 2023, doi: https://doi.org/10.1099/mgen.0.000933.
+[29]S. L. Amarasinghe, S. Su, X. Dong, L. Zappia, M. E. Ritchie, and Q. Gouil, “Opportunities and challenges in long-read sequencing data analysis,” Genome Biology, vol. 21, no. 1, Feb. 2020, doi: https://doi.org/10.1186/s13059-020-1935-5.
+[30]R. K. Holmes and M. G. Jobling, “Genetics,” Nih.gov, 2014. https://www.ncbi.nlm.nih.gov/books/NBK7908/
 
