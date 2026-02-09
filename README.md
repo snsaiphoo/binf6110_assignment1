@@ -118,7 +118,7 @@ QUAST analysis comparing the assembly to the Salmonella enterica serovar Typhimu
 
 Clair3 was used for variant calling, identifying high-confidence SNPs and small indels relative to the Salmonella enterica LT2 reference genome [10]. Most variants passed filtering with high read depth and genotype quality, and allele frequencies were close to 1, 0.9–1.0. Both substitutions and indels were observed, reflecting normal strain-level differences from the laboratory reference.
 
-Variant summary statistics generated with `bcftools stats` [25] reported 10,502 total variants, mostly SNPs (9,353) and fewer indels (1,166). The transition/transversion ratio was 1.08. Quality score distributions showed many high-confidence calls, including a large number of variants with QUAL ≥30, indicating strong support from the sequencing reads. Indels and substitutions are expected in long-read sequencing because these technologies have known error patterns, especially in low-complexity or homopolymer regions [29]. Overall, the variant patterns are consistent with expected long-read behavior and support the reliability of the Clair3 call set.
+Variant summary statistics generated with `bcftools stats` [25] detected 10,502 total variants, mostly SNPs (9,353) and fewer indels (1,166). The transition/transversion ratio was 1.08. Quality score distributions showed many high-confidence calls, including a large number of variants with QUAL ≥30, indicating strong support from the sequencing reads. Indels and substitutions are expected in long-read sequencing because these technologies have known error patterns, especially in low-complexity or homopolymer regions [29]. Overall, the variant patterns are consistent with expected long-read behavior and support the reliability of the Clair3 call set.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/30499c71-015c-4eb7-bc24-7b143e410192"80%" />
@@ -131,12 +131,51 @@ Functional annotation using `bcftools csq` with Prokka gene models  [27, 28] sho
 The annotated VCF was filtered with bcftools [25] to select representative variants for visualization. Selected variants all had maximum QUAL scores (110). Visualizations with IGV can be seen below. 
 
 ### Variant Visualizations
-<img width="830" height="287" alt="Screenshot 2026-02-08 001428" src="https://github.com/user-attachments/assets/2c5498f7-10bf-4473-af9c-2b487b4e8757" />
-<img width="828" height="314" alt="Screenshot 2026-02-08 001453" src="https://github.com/user-attachments/assets/c52872df-3fc0-48c2-8f4e-f20c383cbc99" />
-<img width="959" height="345" alt="Screenshot 2026-02-08 002312" src="https://github.com/user-attachments/assets/42c46a0c-a1fb-419d-87d1-610cd011bfa5" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/74cabb70-2cc6-424c-b115-74072c06e606" width="80%" />
+  <br>
+  <strong>Figure 6: </strong><em> Synonymous mutation identified in consensus: NC_003197.2:1101072 </em>
+</p>
+  <br>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/bf44e24c-a150-4939-84a7-4d52267a0e77" width="80%" />
+  <br>
+  <strong>Figure 7: </strong><em> Frameshift mutation in consensus assembly: NC_003197.2:1789147 </em>
+</p>
+  <br>
 
-## Assembly Visualizations
-<img width="3000" height="3000" alt="asm_vs_ref mmap normal" src="https://github.com/user-attachments/assets/047d140b-84f2-4a2e-95d8-e0fcfec9f6a2" />
+### Assembly Visualizations
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/047d140b-84f2-4a2e-95d8-e0fcfec9f6a2" width="80%" />
+  <br>
+  <strong>Figure 8: </strong><em> Cirocs plot comparing the consensus assembly and reference genome. </em>
+</p>
+  <br>
+  
+## Discussion
+### Variant Discussion
+#### Figure 6 - Synonymous Mutation
+IGV was used to visualize the variants on the polished assembly. Results for one variant are shown in Figure 6. This image demonstrates a synonymous variant corresponding to an A→T substitution within gene STM1008, which encodes a Gifsy-2 prophage protein [31]. The substitution changes the codon silently, leaving the encoded alanine unchanged, as shown in Figure 6. This confirms a synonymous mutation and shows no change in the primary protein sequence. In the IGV view, the variant shows no evidence of local misalignment and has a Phred-scaled quality score of 110, indicating very high confidence. In this case, the mutation appears neutral.
+
+However, synonymous mutations are not always biologically silent. Recent studies on Salmonella enterica have shown that certain synonymous substitutions can alter mRNA structure, leading to measurable increases in growth rate [32]. This aligns with the broader understanding that Gifsy prophage-associated genes contribute to bacterial fitness and survival [33]. Therefore, even when a specific synonymous variant appears neutral at the protein level, variation within prophage regions could be biologically linked to growth and adaptation.
+
+#### Figure 7 - Frameshift Mutation
+The frameshift variant observed in Figure 7 occurs within the gene STM1697. This gene is annotated as a putative diguanylate cyclase/phosphodiesterase domain protein. It can be seen that the deletion creates a gap in the consensus relative to the reference sequence. Functional annotation predicts that the frameshift begins at amino acid 179 due to a 2-nucleotide deletion, after which the downstream protein sequence is altered. This shift changes the reading frame and could substantially modify the encoded protein.
+
+STM1697 has been experimentally shown to regulate motility, biofilm formation, and virulence in Salmonella typhimurium [34]. Because the frameshift disrupts the normal protein structure, this mutation could hypothetically alter how Salmonella regulates environmental adaptation. Since STM1697 operates within a regulatory network that influences bacterial behavior [34], disruption of this gene may affect how the organism responds to environmental conditions. However, these effects remain speculative, and experimental validation would be required to confirm any phenotypic consequences.
+
+Together, these variants illustrate how both neutral and high-impact mutations coexist within the genome, with regulatory disruptions having greater potential to influence bacterial behavior than silent substitutions.
+
+### Assembly Discussion 
+#### Figure 8 - Circos Plot 
+Figure 8 is the assembly analysis that compares the assembled Salmonella enterica genome to the reference. Initial impressions show strong overall structural agreement between the two. In the plot, the reference genome is displayed as two contigs labeled with numbers, while the consensus assembly is labeled using Roman numerals. This allows a direct comparison between both sequences. The two halves of the circos plot are connected by large continuous ribbons, indicating that long genomic regions align in the same order and that the assembly preserved chromosome structure well. 
+
+Only a few crossing ribbons are visible, representing localized relocations rather than widespread rearrangements. These localized differences reflect the conserved core genome of S. enterica, with most variation restricted to genomic islands associated with mobile elements [35]. The outer composition tracks follow very similar patterns in both the assembly and the reference, supporting the idea that the overall nucleotide structure was maintained. Together, the figure demonstrates that the assembly is globally accurate while still capturing localized variation consistent with natural strain diversity.
+
+## Conlcusion 
+This assignment resulted in a reproducible pipeline for genome assembly and variant analysis of the bacterium Salmonella enterica. The Circos plot showed that the assembly largely preserved the genome's structure relative to the reference, with only localized relocations, suggesting accurate reconstruction at the whole-genome scale. The variant calling revealed many mutations ranging from synonymous changes to frameshifts. These variants were inspected in IGV to reinforce the importance of visually confirming computational results. 
+
+Looking at the real-world impacts, this assignment highlighted biological importance of assembling the bacterium Salmonella enterica. This process allows researchers to visualize conserved gene regions and identify where strains evolve and differ over time. Salmonella enterica is a foodborne pathogen, and accurate genome reconstruction is beneficial for public health initiatives such as outbreak tracking and long-term genomic surveillance [35]. This was performed on a small scale, and more tools should be investigated to continue improving the assembly process going forward. 
 
 ## References
 [1] NCBI Sequence Read Archive. “SRA Archive: NCBI,” Nih.gov, 2026. [Online]. Available: https://trace.ncbi.nlm.nih.gov/Traces/?run=SRR32410565 (accessed Jan. 17, 2026).  <br/> 
@@ -162,11 +201,15 @@ The annotated VCF was filtered with bcftools [25] to select representative varia
 [21] R. Wick, “rrwick/Filtlong,” GitHub, Nov. 12, 2022. https://github.com/rrwick/Filtlong <br/> 
 [22] PombertLab, “GitHub - PombertLab/SYNY: The SYNY pipeline investigates synteny between species by reconstructing protein clusters from gene pairs.,” GitHub, 2025. https://github.com/PombertLab/SYNY?tab=readme-ov-file#Circos-plots (accessed Feb. 05, 2026). <br/> 
 [23] J. Johnson, M. Soehnlen, and H. M. Blankenship, “Long read genome assemblers struggle with small plasmids,” Microbial genomics, vol. 9, no. 5, May 2023, doi: https://doi.org/10.1099/mgen.0.001024. <br/>
-[24] “Index of /genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2,” Nih.gov, 2025. https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/ (accessed Feb. 08, 2026).
-[25]“bcftools(1),” Github.io, 2025. https://samtools.github.io/bcftools/bcftools-man.html#csq (accessed Feb. 08, 2026).
-[26]tseemann, “tseemann/prokka,” GitHub, Nov. 11, 2019. https://github.com/tseemann/prokka
-[27]T. Seemann, “Prokka: rapid prokaryotic genome annotation,” Bioinformatics, vol. 30, no. 14, pp. 2068–2069, Mar. 2014, doi: https://doi.org/10.1093/bioinformatics/btu153.
-[28]I. Bassano et al., “Evaluation of variant calling algorithms for wastewater-based epidemiology using mixed populations of SARS-CoV-2 variants in synthetic and wastewater samples,” Microbial Genomics, vol. 9, no. 4, Apr. 2023, doi: https://doi.org/10.1099/mgen.0.000933.
-[29]S. L. Amarasinghe, S. Su, X. Dong, L. Zappia, M. E. Ritchie, and Q. Gouil, “Opportunities and challenges in long-read sequencing data analysis,” Genome Biology, vol. 21, no. 1, Feb. 2020, doi: https://doi.org/10.1186/s13059-020-1935-5.
-[30]R. K. Holmes and M. G. Jobling, “Genetics,” Nih.gov, 2014. https://www.ncbi.nlm.nih.gov/books/NBK7908/
-
+[24] “Index of /genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2,” Nih.gov, 2025. https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/945/GCF_000006945.2_ASM694v2/ (accessed Feb. 08, 2026). <br/>
+[25] “bcftools(1),” Github.io, 2025. [Online]. Available: https://samtools.github.io/bcftools/bcftools-man.html#csq (accessed Feb. 08, 2026).<br/>
+[26] tseemann, “tseemann/prokka,” GitHub, Nov. 11, 2019. [Online]. Available: https://github.com/tseemann/prokka <br/>
+[27] T. Seemann, “Prokka: rapid prokaryotic genome annotation,” Bioinformatics, vol. 30, no. 14, pp. 2068–2069, Mar. 2014, doi: https://doi.org/10.1093/bioinformatics/btu153. <br/>
+[28] I. Bassano et al., “Evaluation of variant calling algorithms for wastewater-based epidemiology using mixed populations of SARS-CoV-2 variants in synthetic and wastewater samples,” Microbial Genomics, vol. 9, no. 4, Apr. 2023, doi: https://doi.org/10.1099/mgen.0.000933. <br/>
+[29] S. L. Amarasinghe, S. Su, X. Dong, L. Zappia, M. E. Ritchie, and Q. Gouil, “Opportunities and challenges in long-read sequencing data analysis,” Genome Biology, vol. 21, no. 1, Feb. 2020, doi: https://doi.org/10.1186/s13059-020-1935-5. <br/>
+[30] R. K. Holmes and M. G. Jobling, “Genetics,” Nih.gov, 2014. https://www.ncbi.nlm.nih.gov/books/NBK7908/ <br/>
+[31] J. S. Bosma, V. Noireaux, and S. D. Bowden, “A Gifsy prophage-encoded protein confers broad phage resistance in Salmonella enterica and is widely distributed across Enterobacteriaceae,” Applied and Environmental Microbiology, vol. 91, no. 12, Dec. 2025, doi: https://doi.org/10.1128/aem.01384-25.<br/>
+[32] J. Kristofich et al., “Synonymous mutations make dramatic contributions to fitness when growth is limited by a weak-link enzyme,” PLoS Genetics, vol. 14, no. 8, p. e1007615, Aug. 2018, doi: https://doi.org/10.1371/journal.pgen.1007615. <br/>
+[33] S. F. Bailey, L. A. Alonso Morales, and R. Kassen, “Effects of Synonymous Mutations beyond Codon Bias: The Evidence for Adaptive Synonymous Substitutions from Microbial Evolution Experiments,” Genome Biology and Evolution, vol. 13, no. 9, Jun. 2021, doi: https://doi.org/10.1093/gbe/evab141. <br/>
+[34] I. Ahmad et al., “The EAL-like protein STM1697 regulates virulence phenotypes, motility and biofilm formation inSalmonella typhimurium,” Molecular Microbiology, vol. 90, no. 6, pp. 1216–1232, Nov. 2013, doi: https://doi.org/10.1111/mmi.12428.
+[35] A. Jacobsen, R. S. Hendriksen, F. M. Aaresturp, D. W. Ussery, and C. Friis, “The Salmonella enterica Pan-genome,” Microbial Ecology, vol. 62, no. 3, pp. 487–504, Jun. 2011, doi: https://doi.org/10.1007/s00248-011-9880-1.
