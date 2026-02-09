@@ -123,7 +123,7 @@ Variant summary statistics generated with `bcftools stats` [25] detected 10,502 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/30499c71-015c-4eb7-bc24-7b143e410192"80%" />
   <br>
-  <strong>Figure 5: </strong><em> Summary of annotated variant calls through bcftools.</em>
+  <strong>Figure 6: </strong><em> Summary of annotated variant calls through bcftools.</em>
 </p>
 
 Functional annotation using `bcftools csq` with Prokka gene models  [27, 28] showed that most variants were synonymous (n = 2139), followed by missense mutations (n = 865). A smaller number of high-impact variants were present, including frameshifts and stop-gained mutations. Nearly all variants were homozygous; the single heterozygous flag is likely due to noise rather than true biological variation, since bacterial genomes are haploid [30].
@@ -134,13 +134,13 @@ The annotated VCF was filtered with bcftools [25] to select representative varia
 <p align="center">
   <img src="https://github.com/user-attachments/assets/74cabb70-2cc6-424c-b115-74072c06e606" width="80%" />
   <br>
-  <strong>Figure 6: </strong><em> Synonymous mutation identified in consensus: NC_003197.2:1101072 </em>
+  <strong>Figure 7: </strong><em> Synonymous mutation identified in consensus: NC_003197.2:1101072 </em>
 </p>
   <br>
 <p align="center">
   <img src="https://github.com/user-attachments/assets/bf44e24c-a150-4939-84a7-4d52267a0e77" width="80%" />
   <br>
-  <strong>Figure 7: </strong><em> Frameshift mutation in consensus assembly: NC_003197.2:1789147 </em>
+  <strong>Figure 8: </strong><em> Frameshift mutation in consensus assembly: NC_003197.2:1789147 </em>
 </p>
   <br>
 
@@ -148,27 +148,27 @@ The annotated VCF was filtered with bcftools [25] to select representative varia
 <p align="center">
   <img src="https://github.com/user-attachments/assets/047d140b-84f2-4a2e-95d8-e0fcfec9f6a2" width="80%" />
   <br>
-  <strong>Figure 8: </strong><em> Cirocs plot comparing the consensus assembly and reference genome. </em>
+  <strong>Figure 9: </strong><em> Cirocs plot comparing the consensus assembly and reference genome. </em>
 </p>
   <br>
   
 ## Discussion
 ### Variant Discussion
-#### Figure 6 - Synonymous Mutation
-IGV was used to visualize the variants on the polished assembly. Results for one variant are shown in Figure 6. This image demonstrates a synonymous variant corresponding to an A→T substitution within gene STM1008, which encodes a Gifsy-2 prophage protein [31]. The substitution changes the codon silently, leaving the encoded alanine unchanged, as shown in Figure 6. This confirms a synonymous mutation and shows no change in the primary protein sequence. In the IGV view, the variant shows no evidence of local misalignment and has a Phred-scaled quality score of 110, indicating very high confidence. In this case, the mutation appears neutral.
+#### Figure 7 - Synonymous Mutation
+IGV was used to visualize the variants on the polished assembly. Results for one variant are shown in Figure 7. This image demonstrates a synonymous variant corresponding to an A→T substitution within gene STM1008, which encodes a Gifsy-2 prophage protein [31]. The substitution changes the codon silently, leaving the encoded alanine unchanged, as shown in Figure 7. This confirms a synonymous mutation and shows no change in the primary protein sequence. In the IGV view, the variant shows no evidence of local misalignment and has a Phred-scaled quality score of 110, indicating very high confidence. In this case, the mutation appears neutral.
 
 However, synonymous mutations are not always biologically silent. Recent studies on Salmonella enterica have shown that certain synonymous substitutions can alter mRNA structure, leading to measurable increases in growth rate [32]. This aligns with the broader understanding that Gifsy prophage-associated genes contribute to bacterial fitness and survival [33]. Therefore, even when a specific synonymous variant appears neutral at the protein level, variation within prophage regions could be biologically linked to growth and adaptation.
 
-#### Figure 7 - Frameshift Mutation
-The frameshift variant observed in Figure 7 occurs within the gene STM1697. This gene is annotated as a putative diguanylate cyclase/phosphodiesterase domain protein. It can be seen that the deletion creates a gap in the consensus relative to the reference sequence. Functional annotation predicts that the frameshift begins at amino acid 179 due to a 2-nucleotide deletion, after which the downstream protein sequence is altered. This shift changes the reading frame and could substantially modify the encoded protein.
+#### Figure 8 - Frameshift Mutation
+The frameshift variant observed in Figure 8 occurs within the gene STM1697. This gene is annotated as a putative diguanylate cyclase/phosphodiesterase domain protein. It can be seen that the deletion creates a gap in the consensus relative to the reference sequence. Functional annotation predicts that the frameshift begins at amino acid 179 due to a 2-nucleotide deletion, after which the downstream protein sequence is altered. This shift changes the reading frame and could substantially modify the encoded protein.
 
 STM1697 has been experimentally shown to regulate motility, biofilm formation, and virulence in Salmonella typhimurium [34]. Because the frameshift disrupts the normal protein structure, this mutation could hypothetically alter how Salmonella regulates environmental adaptation. Since STM1697 operates within a regulatory network that influences bacterial behavior [34], disruption of this gene may affect how the organism responds to environmental conditions. However, these effects remain speculative, and experimental validation would be required to confirm any phenotypic consequences.
 
 Together, these variants illustrate how both neutral and high-impact mutations coexist within the genome, with regulatory disruptions having greater potential to influence bacterial behavior than silent substitutions.
 
 ### Assembly Discussion 
-#### Figure 8 - Circos Plot 
-Figure 8 is the assembly analysis that compares the assembled Salmonella enterica genome to the reference. Initial impressions show strong overall structural agreement between the two. In the plot, the reference genome is displayed as two contigs labeled with numbers, while the consensus assembly is labeled using Roman numerals. This allows a direct comparison between both sequences. The two halves of the circos plot are connected by large continuous ribbons, indicating that long genomic regions align in the same order and that the assembly preserved chromosome structure well. 
+#### Figure 9 - Circos Plot 
+Figure 9 is the assembly analysis that compares the assembled Salmonella enterica genome to the reference. Initial impressions show strong overall structural agreement between the two. In the plot, the reference genome is displayed as two contigs labeled with numbers, while the consensus assembly is labeled using Roman numerals. This allows a direct comparison between both sequences. The two halves of the circos plot are connected by large continuous ribbons, indicating that long genomic regions align in the same order and that the assembly preserved chromosome structure well. 
 
 Only a few crossing ribbons are visible, representing localized relocations rather than widespread rearrangements. These localized differences reflect the conserved core genome of S. enterica, with most variation restricted to genomic islands associated with mobile elements [35]. The outer composition tracks follow very similar patterns in both the assembly and the reference, supporting the idea that the overall nucleotide structure was maintained. Together, the figure demonstrates that the assembly is globally accurate while still capturing localized variation consistent with natural strain diversity.
 
