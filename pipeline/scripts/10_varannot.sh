@@ -35,5 +35,5 @@ apptainer exec ../containers/bcftools.sif bcftools csq \
   -f ../data/GCF_000006945.2_ASM694v2_genomic.fna \
   -g ../prokka_out/salmonella.gff \
   highconf.vcf \
-  -Ov -o annotated.vcf
+  -Ov -o annotated_var.vcf
 
